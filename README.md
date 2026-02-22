@@ -23,7 +23,7 @@ No build-step complexity, easier to audit. Trade-off: more verbose than utility-
 
 ---
 
-## Setup 
+## Setup
 
 **For local development — no `.env` file needed.**
 The app runs out of the box with sensible defaults (SQLite database, built-in secret key). Just install dependencies and start the servers.
@@ -102,6 +102,8 @@ python seed.py
 
 ## Running Tests
 
+### Backend Tests (50 tests)
+
 ```bash
 cd backend
 
@@ -112,7 +114,26 @@ pytest -v --tb=short
 pytest --cov=app --cov-report=term-missing
 ```
 
-Tests use an isolated in-memory SQLite database. No running server or external services are required.
+Covers: auth, projects, issues, comments, filters, pagination, and permission enforcement.
+Uses an isolated SQLite test database — no running server required.
+
+### Frontend Tests (45 tests)
+
+```bash
+cd frontend
+
+# Run all tests once
+npm test
+
+# Watch mode — re-runs on file changes
+npm run test:watch
+
+# With coverage report
+npm run test:coverage
+```
+
+Covers: Badge, Modal, Toast, AuthContext, LoginPage, ProtectedRoute, and API client.
+Uses Vitest + React Testing Library in a jsdom environment — no running server required.
 
 ---
 
