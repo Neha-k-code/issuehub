@@ -1,6 +1,6 @@
-# IssueHub — Lightweight Bug Tracker
+# IssueHub - Lightweight Bug Tracker
 
-A minimal, team-oriented bug tracker where developers and project managers can create projects, file and track issues, collaborate via comments, and manage team membership — all through a responsive web interface backed by a well-structured REST API.
+A minimal, team-oriented bug tracker where developers and project managers can create projects, file and track issues, collaborate via comments, and manage team membership - all through a responsive web interface backed by a well-structured REST API.
 
 ---
 
@@ -10,7 +10,7 @@ A minimal, team-oriented bug tracker where developers and project managers can c
 Automatic OpenAPI docs at `/docs` and `/redoc` with zero config, native Pydantic v2 integration for all request/response validation, and async-ready architecture. Trade-off: smaller community than Flask/Django, less opinionated structure requiring disciplined manual organisation.
 
 **SQLite (dev) / PostgreSQL (prod)**
-Zero-config local setup — the database is a single file and the backend starts with one command. Switching to PostgreSQL requires only changing `DATABASE_URL`; the SQLAlchemy ORM and Alembic migrations are identical for both engines. Trade-off: SQLite lacks native full-text search (`LIKE` used instead of `tsvector`), limited concurrent write throughput, and some PostgreSQL-specific types.
+Zero-config local setup - the database is a single file and the backend starts with one command. Switching to PostgreSQL requires only changing `DATABASE_URL`; the SQLAlchemy ORM and Alembic migrations are identical for both engines. Trade-off: SQLite lacks native full-text search (`LIKE` used instead of `tsvector`), limited concurrent write throughput, and some PostgreSQL-specific types.
 
 **JWT over sessions**
 Stateless tokens are ideal for a React SPA: no server-side session store required, tokens attach to every request via an axios interceptor. Trade-off: access tokens cannot be invalidated server-side without a denylist. MVP uses 24-hour expiry with no refresh token flow.
@@ -25,10 +25,10 @@ No build-step complexity, easier to audit. Trade-off: more verbose than utility-
 
 ## Setup
 
-**For local development — no `.env` file needed.**
+**For local development - no `.env` file needed.**
 The app runs out of the box with sensible defaults (SQLite database, built-in secret key). Just install dependencies and start the servers.
 
-**Optional — create a `.env` for custom config or production:**
+**Optional - create a `.env` for custom config or production:**
 
 ```bash
 cp backend/.env.example backend/.env
@@ -115,7 +115,7 @@ pytest --cov=app --cov-report=term-missing
 ```
 
 Covers: auth, projects, issues, comments, filters, pagination, and permission enforcement.
-Uses an isolated SQLite test database — no running server required.
+Uses an isolated SQLite test database - no running server required.
 
 ### Frontend Tests (45 tests)
 
@@ -125,7 +125,7 @@ cd frontend
 # Run all tests once
 npm test
 
-# Watch mode — re-runs on file changes
+# Watch mode - re-runs on file changes
 npm run test:watch
 
 # With coverage report
@@ -133,7 +133,7 @@ npm run test:coverage
 ```
 
 Covers: Badge, Modal, Toast, AuthContext, LoginPage, ProtectedRoute, and API client.
-Uses Vitest + React Testing Library in a jsdom environment — no running server required.
+Uses Vitest + React Testing Library in a jsdom environment - no running server required.
 
 ---
 
@@ -169,28 +169,28 @@ All errors return: `{"error": {"code": "string", "message": "string", "details":
 ## Known Limitations & What I'd Do With More Time
 
 ### Current Limitations
-- **No JWT refresh tokens** — 24h expiry is a shortcut; production needs a refresh flow with HttpOnly cookie-stored refresh tokens.
-- **No real-time updates** — Comments require a page refresh; WebSockets (or SSE) would enable live comment streaming.
-- **No email delivery** — Member invitations are UI-only; would integrate SendGrid or AWS SES for real invite emails.
-- **No file attachments** — Issues cannot have screenshots or file attachments; would use S3-compatible storage.
-- **Basic pagination** — Offset-based pagination degrades at scale; cursor-based pagination would be more efficient for large datasets.
-- **No audit log / issue history** — Field changes are not recorded; would add a full history table tracking every change with actor, timestamp, and old/new values.
-- **No rate limiting** — Auth endpoints are unprotected from brute force; would add `slowapi` middleware in production.
-- **SQLite full-text search** — Using basic `LIKE`; would switch to PostgreSQL `tsvector` + GIN indexing for production-grade search.
+- **No JWT refresh tokens** - 24h expiry is a shortcut; production needs a refresh flow with HttpOnly cookie-stored refresh tokens.
+- **No real-time updates** - Comments require a page refresh; WebSockets (or SSE) would enable live comment streaming.
+- **No email delivery** - Member invitations are UI-only; would integrate SendGrid or AWS SES for real invite emails.
+- **No file attachments** - Issues cannot have screenshots or file attachments; would use S3-compatible storage.
+- **Basic pagination** - Offset-based pagination degrades at scale; cursor-based pagination would be more efficient for large datasets.
+- **No audit log / issue history** - Field changes are not recorded; would add a full history table tracking every change with actor, timestamp, and old/new values.
+- **No rate limiting** - Auth endpoints are unprotected from brute force; would add `slowapi` middleware in production.
+- **SQLite full-text search** - Using basic `LIKE`; would switch to PostgreSQL `tsvector` + GIN indexing for production-grade search.
 
 ### Technical Improvements
-- **JWT refresh token rotation** — Short-lived access tokens + secure HttpOnly refresh tokens to fix the current server-side invalidation gap.
-- **Real-time comments via WebSockets** — Broadcast comments and status changes live without page refresh.
-- **Transactional email delivery** — Integrate SendGrid or AWS SES for real member invitation emails.
-- **Issue history / audit log** — Record every field change with actor, timestamp, and old/new values.
-- **PostgreSQL full-text search** — Replace LIKE with tsvector + GIN indexing for production-grade search.
-- **Cursor-based pagination** — Replace offset pagination for consistent performance at large scale.
-- **Rate limiting** — Add slowapi middleware to protect auth endpoints from brute-force attacks.
-- **File attachments via S3** — Allow screenshots, logs, and documents to be attached to issues.
+- **JWT refresh token rotation** - Short-lived access tokens + secure HttpOnly refresh tokens to fix the current server-side invalidation gap.
+- **Real-time comments via WebSockets** - Broadcast comments and status changes live without page refresh.
+- **Transactional email delivery** - Integrate SendGrid or AWS SES for real member invitation emails.
+- **Issue history / audit log** - Record every field change with actor, timestamp, and old/new values.
+- **PostgreSQL full-text search** - Replace LIKE with tsvector + GIN indexing for production-grade search.
+- **Cursor-based pagination** - Replace offset pagination for consistent performance at large scale.
+- **Rate limiting** - Add slowapi middleware to protect auth endpoints from brute-force attacks.
+- **File attachments via S3** - Allow screenshots, logs, and documents to be attached to issues.
 
 ### New Feature Roadmap
-- **Kanban board view** — Drag-and-drop issues across status columns as a visual alternative to the table list view.
-- **GitHub / GitLab integration** — Link commits and PRs to issues; auto-close an issue when the linked PR merges.
-- **Dashboard & reporting** — Charts for open vs closed issues, issues by priority, team workload, and milestone burndown.
-- **@Mentions & notifications** — Tag team members in comments; in-app notification bell for assignments and mentions.
-- **Issue templates** — Pre-filled forms for Bug Report, Feature Request, and Task to ensure consistent reporting.
+- **Kanban board view** - Drag-and-drop issues across status columns as a visual alternative to the table list view.
+- **GitHub / GitLab integration** - Link commits and PRs to issues; auto-close an issue when the linked PR merges.
+- **Dashboard & reporting** - Charts for open vs closed issues, issues by priority, team workload, and milestone burndown.
+- **@Mentions & notifications** - Tag team members in comments; in-app notification bell for assignments and mentions.
+- **Issue templates** - Pre-filled forms for Bug Report, Feature Request, and Task to ensure consistent reporting.
